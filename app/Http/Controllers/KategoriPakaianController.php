@@ -14,7 +14,7 @@ class KategoriPakaianController extends Controller
      */
     public function index()
     {
-        $title = 'Data Kategori Pakaian';
+        $title = 'Data Kategori Produk';
         $kategoriPakaian = DB::table('kategori_pakaians')->get();
         return view('kategori_pakaian.index', compact('kategoriPakaian', 'title'));
     }
@@ -24,7 +24,7 @@ class KategoriPakaianController extends Controller
      */
     public function create()
     {
-        $title = 'Tambah Kategori Pakaian';
+        $title = 'Tambah Kategori Produk';
         return view('kategori_pakaian.create', compact('title'));
     }
 
@@ -38,23 +38,23 @@ class KategoriPakaianController extends Controller
         ];
         $request->validate([
             'nama_kategori_pakaian' => 'required',
-           
-        ],$messages);
-    
+
+        ], $messages);
+
         $data = new KategoriPakaian();
         $data->nama_kategori_pakaian = $request->nama_kategori_pakaian;
         $data->save();
         return redirect()->route('kategori_pakaian.index')->with('Sukses', 'Berhasil Tambah Kategori Buku');
     }
 
-   
+
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(KategoriPakaian $kategoriPakaian)
     {
-        $title = 'Edit Kategori Pakaian';
+        $title = 'Edit Kategori Produk';
         return view('kategori_pakaian.edit', compact('kategoriPakaian', 'title'));
     }
 
@@ -67,9 +67,9 @@ class KategoriPakaianController extends Controller
         $update = [
             'nama_kategori_pakaian' => $request->nama_kategori_pakaian,
 
-        ]; 
+        ];
         $kategori_pakaian->update($update);
-        return redirect()->route('kategori_pakaian.index')->with('Sukses', 'Berhasil Edit Kategori Pakaian');
+        return redirect()->route('kategori_pakaian.index')->with('Sukses', 'Berhasil Edit Kategori Produk');
     }
 
     /**
@@ -79,11 +79,11 @@ class KategoriPakaianController extends Controller
     {
         $kategori_pakaian = KategoriPakaian::find($id);
         $namagambarkategori_pakaian = $kategori_pakaian->gambar_kategori_pakaian;
-        $gambar_kategori_pakaian =public_path ('file/kategori_pakaian/').$namagambarkategori_pakaian;
-        if(file_exists($gambar_kategori_pakaian)){
+        $gambar_kategori_pakaian = public_path('file/kategori_pakaian/') . $namagambarkategori_pakaian;
+        if (file_exists($gambar_kategori_pakaian)) {
             @unlink($gambar_kategori_pakaian);
         }
         $kategori_pakaian->delete();
-        return redirect()->back()->with('Sukses', 'Berhasil Hapus Kategori Pakaian');
+        return redirect()->back()->with('Sukses', 'Berhasil Hapus Kategori Produk');
     }
 }

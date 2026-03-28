@@ -22,7 +22,7 @@
                         @csrf
                         @method('POST')
                         <div class="form-group">
-                            <label for="">Kategori pakaian</label>
+                            <label for="">Kategori Produk</label>
                             <select name="kategori_pakaian_id" id="dropdown" required>
                                 <option value=""></option>
                                 @foreach ($kategori_pakaian as $item)
@@ -35,8 +35,8 @@
 
 
                         <div class="form-group mb-2">
-                            <label for=""> Nama Pakaian <abbr title="" style="color: black">*</abbr></label>
-                            <input type="text" class="form-control" placeholder="Masukkan nama pakaian disini...."
+                            <label for=""> Nama Produk <abbr title="" style="color: black">*</abbr></label>
+                            <input type="text" class="form-control" placeholder="Masukkan Nama Produk disini...."
                                 name="nama_pakaian" value="{{ old('nama_pakaian') }}" required>
                         </div>
 
@@ -44,12 +44,13 @@
 
                         <div class="form-group mb-2">
                             <label for="">Deskripsi Pakaian</label>
-                            <textarea name="pratinjau_pakaian" id="editor" cols="30" rows="10" class="form-control" required>{{ old('pratinjau_pakaian') }}</textarea>
+                            <textarea name="pratinjau_pakaian" id="editor" cols="30" rows="10" class="form-control"
+                                required>{{ old('pratinjau_pakaian') }}</textarea>
                         </div>
 
                         <div class="form-group mb-2">
-                            <label for=""> Harga Pakaian <abbr title="" style="color: black">*</abbr></label>
-                            <input type="number" class="form-control" placeholder="Masukkan harga pakaian disini...."
+                            <label for=""> Harga Produk <abbr title="" style="color: black">*</abbr></label>
+                            <input type="number" class="form-control" placeholder="Masukkan Harga Produk disini...."
                                 name="harga_pakaian" value="{{ old('harga_pakaian') }}" required>
                         </div>
 
@@ -76,7 +77,8 @@
                         </div>
                         <div class="form-group mb-2 text-primary">
                             <label><strong>Stok All Size (Satu Ukuran / Tidak ada ukuran spesifik)</strong></label>
-                            <input type="number" class="form-control" name="stok_ukuran[All Size]" min="0" value="0" required>
+                            <input type="number" class="form-control" name="stok_ukuran[All Size]" min="0" value="0"
+                                required>
                         </div>
 
 
@@ -105,13 +107,13 @@
 
 @section('script')
     <script>
-        document.getElementById('inputImg').addEventListener('change', function() {
+        document.getElementById('inputImg').addEventListener('change', function () {
             const fileInput = this;
             const previewImg = document.getElementById('previewImg');
 
             if (fileInput.files && fileInput.files[0]) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     previewImg.src = e.target.result;
                     previewImg.classList.remove('d-none');
                 }
@@ -122,7 +124,7 @@
         });
 
         // Script untuk menyembunyikan Ongkos Kirim jika Type pakaian == 1
-        document.getElementById('typeDropdown').addEventListener('change', function() {
+        document.getElementById('typeDropdown').addEventListener('change', function () {
             const selectedType = this.value;
             const ongkirGroup = document.getElementById('ongkirGroup');
 

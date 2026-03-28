@@ -19,7 +19,7 @@
                             <tr>
                                 <th>No</th>
                                 <!-- <th>ID Kategori</th> -->
-                                <th>Nama Kategori Pakaian</th>
+                                <th>Nama Kategori Produk</th>
                                 <th>Aksi</th>
                             </tr>
                         <tbody>
@@ -29,13 +29,17 @@
                                     <!-- <td>{{ $row->id_kategori_pakaian }}</td> -->
                                     <td>{{ $row->nama_kategori_pakaian }}</td>
                                     {{-- <td>
-                                    <a href="{{ route('kategori_pakaian.edit', $row->id_kategori_pakaian) }}" class="btn btn-primary btn-xs" style="display: inline-block"><i class="fas fa-edit">Edit</i></a>
-                                    <form action="{{ route('kategori_pakaian.destroy', $row->id_kategori_pakaian) }}" method="POST" style="display: inline-block">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-danger btn-xs btn-flat show_confirm"><i class="fas fa-trash"> Delete</i></button>
-                                    </form>
-                                </td> --}}
+                                        <a href="{{ route('kategori_pakaian.edit', $row->id_kategori_pakaian) }}"
+                                            class="btn btn-primary btn-xs" style="display: inline-block"><i
+                                                class="fas fa-edit">Edit</i></a>
+                                        <form action="{{ route('kategori_pakaian.destroy', $row->id_kategori_pakaian) }}"
+                                            method="POST" style="display: inline-block">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-danger btn-xs btn-flat show_confirm"><i class="fas fa-trash">
+                                                    Delete</i></button>
+                                        </form>
+                                    </td> --}}
                                 </tr>
                             @endforeach
                         </tbody>

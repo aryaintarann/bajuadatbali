@@ -4,16 +4,16 @@ use App\Models\LaporanVerifikasi;
 use App\Models\Order;
 use Illuminate\Support\Facades\DB;
 
-$konf = DB::table('setting')->first() ?? (object)[
-    'instansi_setting'   => 'Baju Adat Bali',
-    'logo_setting'       => null,
+$konf = DB::table('setting')->first() ?? (object) [
+    'instansi_setting' => 'Baju Adat Bali',
+    'logo_setting' => null,
     'logo_login_setting' => null,
-    'favicon_setting'    => null,
-    'tentang_setting'    => '',
-    'keyword_setting'    => '',
-    'alamat_setting'     => '-',
-    'email_setting'      => '-',
-    'no_hp_setting'      => '-',
+    'favicon_setting' => null,
+    'tentang_setting' => '',
+    'keyword_setting' => '',
+    'alamat_setting' => '-',
+    'email_setting' => '-',
+    'no_hp_setting' => '-',
 ];
 
 ?>
@@ -69,7 +69,8 @@ $konf = DB::table('setting')->first() ?? (object)[
     <link rel="stylesheet" href="{{ asset('admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('admin/dist/css/adminlte.min.css') }}">
-    {{-- <link rel="icon" href="logo.ico"> --}}
+    {{--
+    <link rel="icon" href="logo.ico"> --}}
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Tempusdominus Bootstrap 4 -->
@@ -86,7 +87,8 @@ $konf = DB::table('setting')->first() ?? (object)[
     <!-- Daterange picker -->
     <link rel="stylesheet" href="{{ asset('admin/plugins/daterangepicker/daterangepicker.css') }}">
     <!-- summernote -->
-    {{-- <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}"> --}}
+    {{--
+    <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}"> --}}
     <link rel="shortcut icon" href="{{ asset('koper.png') }}">
     {{-- leaflet --}}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
@@ -141,8 +143,7 @@ $konf = DB::table('setting')->first() ?? (object)[
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i
-                            class="fas fa-bars"></i></a>
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="{{ route('dashboard.index') }}" class="nav-link">Home</a>
@@ -160,13 +161,11 @@ $konf = DB::table('setting')->first() ?? (object)[
                     <ul class="dropdown-menu">
                         <li align="center" class="well" style="">
                             <a href="{{ route('profile.show') }}" class="btn btn-sm btn-dark form-control mb-1"><span
-                                     class="glyphicon glyphicon-lock"></span> Profile</a>
+                                    class="glyphicon glyphicon-lock"></span> Profile</a>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <a href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-              this.closest('form').submit();"
-                                    class="btn btn-sm btn-danger form-control">Logout</a>
+                                <a href="{{ route('logout') }}" onclick="event.preventDefault();
+              this.closest('form').submit();" class="btn btn-sm btn-danger form-control">Logout</a>
                             </form>
                         </li>
                     </ul>
@@ -198,10 +197,11 @@ $konf = DB::table('setting')->first() ?? (object)[
                                 alt="{{ Auth::user()->name }}" style="width: 45px; height: 45px;">
                         @else
                             @if($konf->logo_setting)
-                                <img src="{{ asset('logo/' . $konf->logo_setting) }}" class="img-circle elevation-2"
-                                    alt="Admin" style="width: 45px; height: 45px">
+                                <img src="{{ asset('logo/' . $konf->logo_setting) }}" class="img-circle elevation-2" alt="Admin"
+                                    style="width: 45px; height: 45px">
                             @else
-                                <div class="img-circle elevation-2 bg-secondary d-flex align-items-center justify-content-center" style="width: 45px; height: 45px">
+                                <div class="img-circle elevation-2 bg-secondary d-flex align-items-center justify-content-center"
+                                    style="width: 45px; height: 45px">
                                     <i class="fas fa-user"></i>
                                 </div>
                             @endif
@@ -272,13 +272,13 @@ $konf = DB::table('setting')->first() ?? (object)[
                                     <li class="nav-item">
                                         <a href="{{ route('kategori_pakaian.index') }}" class="nav-link">
                                             <i class="fas fa-list nav-icon"></i>
-                                            <p>Kategori Pakaian</p>
+                                            <p>Kategori Produk</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="{{ route('pakaian.index') }}" class="nav-link">
                                             <i class="fas fa-book nav-icon"></i>
-                                            <p>Data Pakaian</p>
+                                            <p>Data Produk</p>
                                         </a>
                                     </li>
 
@@ -326,7 +326,7 @@ $konf = DB::table('setting')->first() ?? (object)[
                 <div class="container-fluid">
                     Waktu Server Saat Ini:
                     <p><?php $tg = date('Y-m-d');
-                    echo Carbon\Carbon::parse($tg)->isoFormat('dddd, D MMMM Y'); ?> <span id="clock"></span></p>
+echo Carbon\Carbon::parse($tg)->isoFormat('dddd, D MMMM Y'); ?> <span id="clock"></span></p>
                     <div class="row mb-2">
                         <div class="col-sm-6">
                             <h1>{{ $title }}</h1>
@@ -353,7 +353,7 @@ $konf = DB::table('setting')->first() ?? (object)[
                 <b>Version</b> 0.1.0
             </div>
             <strong>Copyright &copy; <?php $cpy = date('Y');
-            echo $cpy; ?><a href="{{ route('dashboard.index') }}">
+echo $cpy; ?><a href="{{ route('dashboard.index') }}">
                     {{ $konf->instansi_setting }}</a>.</strong> All rights reserved.
         </footer>
 
@@ -389,7 +389,8 @@ $konf = DB::table('setting')->first() ?? (object)[
     <!-- Tempusdominus Bootstrap 4 -->
     <script src="{{ asset('admin/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
     <!-- Summernote -->
-    {{-- <script src="{{ asset('admin/plugins/summernote/summernote-bs4.min.js') }}"></script> --}}
+    {{--
+    <script src="{{ asset('admin/plugins/summernote/summernote-bs4.min.js') }}"></script> --}}
     <!-- overlayScrollbars -->
     <script src="{{ asset('admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
     <!-- AdminLTE App -->
@@ -419,17 +420,18 @@ $konf = DB::table('setting')->first() ?? (object)[
     <script src="{{ asset('admin/js/gambar.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/gambar.js') }}"></script>
     <script>
-        $("#preview_gambar").change(function() {
+        $("#preview_gambar").change(function () {
             bacaGambar(this);
         });
     </script>
     <script src="{{ asset('admin/ckeditor/ckeditor.js') }}"></script>
-    {{-- <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script> --}}
+    {{--
+    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script> --}}
 
     {{-- livesearch --}}
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
-        $(function() {
+        $(function () {
             $("#example1").DataTable({
                 "responsive": true,
                 "lengthChange": true,
@@ -515,17 +517,17 @@ $konf = DB::table('setting')->first() ?? (object)[
         setInterval(showTime, 500);
     </script>
     <script type="text/javascript">
-        $('.show_confirm').click(function(event) {
+        $('.show_confirm').click(function (event) {
             var form = $(this).closest("form");
             var name = $(this).data("name");
             event.preventDefault();
             swal({
-                    title: `Yakin ingin menghapus data ini?`,
-                    text: "Jika di hapus maka data ini akan hilang.",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                })
+                title: `Yakin ingin menghapus data ini?`,
+                text: "Jika di hapus maka data ini akan hilang.",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
                 .then((willDelete) => {
                     if (willDelete) {
                         form.submit();
@@ -539,8 +541,8 @@ $konf = DB::table('setting')->first() ?? (object)[
         </script>
     @endif
     <script>
-        $(document).ready(function() {
-            $("#angka").keyup(function() {
+        $(document).ready(function () {
+            $("#angka").keyup(function () {
                 $(this).maskNumber({
                     integer: true,
                     thousand: "."
@@ -568,13 +570,13 @@ $konf = DB::table('setting')->first() ?? (object)[
         });
     </script>
     <script>
-        $("#preview_gambar").change(function() {
+        $("#preview_gambar").change(function () {
             bacaGambar(this);
         });
     </script>
     <script>
-        $(document).ready(function() {
-            $('#country-dd').on('change', function() {
+        $(document).ready(function () {
+            $('#country-dd').on('change', function () {
                 var idNegara = this.value;
                 $("#state-dd").html('');
                 $.ajax({
@@ -585,9 +587,9 @@ $konf = DB::table('setting')->first() ?? (object)[
                         _token: '{{ csrf_token() }}'
                     },
                     dataType: 'json',
-                    success: function(result) {
+                    success: function (result) {
                         $('#state-dd').html('<option value="">Select State</option>');
-                        $.each(result.provinsi, function(key, value) {
+                        $.each(result.provinsi, function (key, value) {
                             $("#state-dd").append('<option value="' + value
                                 .id_provinsi + '">' + value.nama_provinsi +
                                 '</option>');
@@ -596,7 +598,7 @@ $konf = DB::table('setting')->first() ?? (object)[
                     }
                 });
             });
-            $('#state-dd').on('change', function() {
+            $('#state-dd').on('change', function () {
                 var idProvinsi = this.value;
                 $("#city-dd").html('');
                 $.ajax({
@@ -607,9 +609,9 @@ $konf = DB::table('setting')->first() ?? (object)[
                         _token: '{{ csrf_token() }}'
                     },
                     dataType: 'json',
-                    success: function(res) {
+                    success: function (res) {
                         $('#city-dd').html('<option value="">Select City</option>');
-                        $.each(res.kota, function(key, value) {
+                        $.each(res.kota, function (key, value) {
                             $("#city-dd").append('<option value="' + value
                                 .id_kota + '">' + value.nama_kota + '</option>');
                         });

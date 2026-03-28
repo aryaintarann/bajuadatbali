@@ -24,7 +24,7 @@
                         @csrf
                         @method('PUT')
                         <div class="form-group">
-                            <label for="">Kategori pakaian</label>
+                            <label for="">Kategori Produk</label>
                             <select name="kategori_pakaian_id" id="dropdown">
                                 <option value=""></option>
                                 @foreach ($kategori_pakaian as $item)
@@ -35,7 +35,7 @@
                         </div>
 
                         <div class="form-group mb-2">
-                            <label for="">Nama Pakaian <abbr title="" style="color: black">*</abbr></label>
+                            <label for="">Nama Produk <abbr title="" style="color: black">*</abbr></label>
                             <input required type="text" class="form-control" name="nama_pakaian"
                                 value="{{ $pakaian->nama_pakaian }}">
                         </div>
@@ -43,11 +43,12 @@
 
                         <div class="form-group mb-2">
                             <label for="">Deskripsi Pakaian</label>
-                            <textarea name="pratinjau_pakaian" id="editor" cols="30" rows="10" class="form-control">{{ $pakaian->pratinjau_pakaian }}</textarea>
+                            <textarea name="pratinjau_pakaian" id="editor" cols="30" rows="10"
+                                class="form-control">{{ $pakaian->pratinjau_pakaian }}</textarea>
                         </div>
 
                         <div class="form-group mb-2">
-                            <label for="">Harga pakaian <abbr title="" style="color: black">*</abbr></label>
+                            <label for="">Harga Produk <abbr title="" style="color: black">*</abbr></label>
                             <input required type="number" class="form-control" name="harga_pakaian"
                                 value="{{ $pakaian->harga_pakaian }}">
                         </div>
@@ -55,34 +56,39 @@
                         {{-- Hapus Input Stok Global & Ganti dengan Stok Per Ukuran --}}
                         <div class="form-group mb-2">
                             <label>Stok Ukuran S</label>
-                            <input type="number" class="form-control" name="stok_ukuran[S]" min="0" value="{{ $pakaian->sizes->where('ukuran', 'S')->first()->stok ?? 0 }}" required>
+                            <input type="number" class="form-control" name="stok_ukuran[S]" min="0"
+                                value="{{ $pakaian->sizes->where('ukuran', 'S')->first()->stok ?? 0 }}" required>
                         </div>
                         <div class="form-group mb-2">
                             <label>Stok Ukuran M</label>
-                            <input type="number" class="form-control" name="stok_ukuran[M]" min="0" value="{{ $pakaian->sizes->where('ukuran', 'M')->first()->stok ?? 0 }}" required>
+                            <input type="number" class="form-control" name="stok_ukuran[M]" min="0"
+                                value="{{ $pakaian->sizes->where('ukuran', 'M')->first()->stok ?? 0 }}" required>
                         </div>
                         <div class="form-group mb-2">
                             <label>Stok Ukuran L</label>
-                            <input type="number" class="form-control" name="stok_ukuran[L]" min="0" value="{{ $pakaian->sizes->where('ukuran', 'L')->first()->stok ?? 0 }}" required>
+                            <input type="number" class="form-control" name="stok_ukuran[L]" min="0"
+                                value="{{ $pakaian->sizes->where('ukuran', 'L')->first()->stok ?? 0 }}" required>
                         </div>
                         <div class="form-group mb-2">
                             <label>Stok Ukuran XL</label>
-                            <input type="number" class="form-control" name="stok_ukuran[XL]" min="0" value="{{ $pakaian->sizes->where('ukuran', 'XL')->first()->stok ?? 0 }}" required>
+                            <input type="number" class="form-control" name="stok_ukuran[XL]" min="0"
+                                value="{{ $pakaian->sizes->where('ukuran', 'XL')->first()->stok ?? 0 }}" required>
                         </div>
                         <div class="form-group mb-2">
                             <label>Stok Ukuran XXL</label>
-                            <input type="number" class="form-control" name="stok_ukuran[XXL]" min="0" value="{{ $pakaian->sizes->where('ukuran', 'XXL')->first()->stok ?? 0 }}" required>
+                            <input type="number" class="form-control" name="stok_ukuran[XXL]" min="0"
+                                value="{{ $pakaian->sizes->where('ukuran', 'XXL')->first()->stok ?? 0 }}" required>
                         </div>
                         <div class="form-group mb-2 text-primary">
                             <label><strong>Stok All Size (Satu Ukuran / Tidak ada ukuran spesifik)</strong></label>
-                            <input type="number" class="form-control" name="stok_ukuran[All Size]" min="0" value="{{ $pakaian->sizes->where('ukuran', 'All Size')->first()->stok ?? 0 }}" required>
+                            <input type="number" class="form-control" name="stok_ukuran[All Size]" min="0"
+                                value="{{ $pakaian->sizes->where('ukuran', 'All Size')->first()->stok ?? 0 }}" required>
                         </div>
 
 
                         {{-- <div class="form-group mb-2" id="ongkir-section">
                             <label for="">Ongkos Kirim <abbr title="" style="color: black">*</abbr></label>
-                            <input required type="number" class="form-control" name="ongkir"
-                                value="{{ $pakaian->ongkir }}">
+                            <input required type="number" class="form-control" name="ongkir" value="{{ $pakaian->ongkir }}">
                         </div> --}}
 
                         <div class="form-group mb-3">
@@ -93,8 +99,8 @@
 
                         <div class="form-group mb-3">
                             <label for="">Preview Gambar</label>
-                            <img src="{{ asset('file/pakaian/' . $pakaian->gambar_pakaian) }}" alt=""
-                                style="width: 200px;" id="gambar_nodin">
+                            <img src="{{ asset('file/pakaian/' . $pakaian->gambar_pakaian) }}" alt="" style="width: 200px;"
+                                id="gambar_nodin">
                         </div>
 
                 </div>
@@ -115,7 +121,7 @@
         });
 
         // JavaScript to handle hiding/showing of the Ongkos Kirim section
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const idTypeSelect = document.getElementById('id_type');
             const ongkirSection = document.getElementById('ongkir-section');
             const ongkirInput = document.querySelector('input[name="ongkir"]');

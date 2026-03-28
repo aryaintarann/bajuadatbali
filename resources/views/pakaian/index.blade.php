@@ -23,10 +23,10 @@
                             <tr>
                                 <th scope="col">No</th>
 
-                                <th scope="col">Nama Pakaian</th>
-                                <th scope="col">Harga Pakaian</th>
-                                <th scope="col">Stok Pakaian</th>
-                                <th scope="col">Gambar Pakaian</th>
+                                <th scope="col">Nama Produk</th>
+                                <th scope="col">Harga Produk</th>
+                                <th scope="col">Stok Produk</th>
+                                <th scope="col">Gambar Produk</th>
                                 <th scope="col">Aksi</th>
                             </tr>
                         </thead>
@@ -42,26 +42,22 @@
                                             alt="{{ $row->nama_pakaian }}" class="img-fluid" style="width: 100px;"></td>
                                     @if (Auth::user()->id == 1)
                                         <td>
-                                            <a href="{{ route('pakaian.show', $row->id_pakaian) }}"
-                                                class="btn btn-warning btn-xs" style="display: inline-block"> <i
-                                                    class="fas fa-eye"> Show</i></a>
-                                            <a href="{{ route('pakaian.edit', $row->id_pakaian) }}"
-                                                class="btn btn-primary btn-xs" style="display: inline-block"><i
-                                                    class="fas fa-edit">Edit</i></a>
+                                            <a href="{{ route('pakaian.show', $row->id_pakaian) }}" class="btn btn-warning btn-xs"
+                                                style="display: inline-block"> <i class="fas fa-eye"> Show</i></a>
+                                            <a href="{{ route('pakaian.edit', $row->id_pakaian) }}" class="btn btn-primary btn-xs"
+                                                style="display: inline-block"><i class="fas fa-edit">Edit</i></a>
                                             <form action="{{ route('pakaian.destroy', $row->id_pakaian) }}" method="POST"
                                                 style="display: inline-block">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit"
-                                                    class="btn btn-danger btn-xs btn-flat show_confirm"><i
+                                                <button type="submit" class="btn btn-danger btn-xs btn-flat show_confirm"><i
                                                         class="fas fa-trash">Delete</i></button>
                                             </form>
                                         </td>
                                     @else
                                         <td>
-                                            <a href="{{ route('pakaian.show', $row->id_pakaian) }}"
-                                                class="btn btn-warning btn-xs" style="display: inline-block"> <i
-                                                    class="fas fa-eye"> Mulai Membaca</i></a>
+                                            <a href="{{ route('pakaian.show', $row->id_pakaian) }}" class="btn btn-warning btn-xs"
+                                                style="display: inline-block"> <i class="fas fa-eye"> Mulai Membaca</i></a>
                                         </td>
                                     @endif
 

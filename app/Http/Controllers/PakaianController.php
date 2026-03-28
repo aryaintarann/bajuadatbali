@@ -18,7 +18,7 @@ class PakaianController extends Controller
      */
     public function index(Request $request)
     {
-        $title = 'Data Pakaian';
+        $title = 'Data Produk';
         // Query pakaian
         $pakaian = DB::table('pakaian')->get();
         return view('pakaian.index', compact('title', 'pakaian'));
@@ -33,7 +33,7 @@ class PakaianController extends Controller
     {
         $kategori_pakaian = KategoriPakaian::all();
         $pakaian = Pakaian::all();
-        $title = 'Tambah Data Pakaian';
+        $title = 'Tambah Data Produk';
         return view('pakaian.create', compact('pakaian', 'title', 'kategori_pakaian'));
     }
 
@@ -65,14 +65,14 @@ class PakaianController extends Controller
 
         $pakaian->gambar_pakaian = $namafilepakaian;
         $pakaian->slug_pakaian = Str::slug($request->nama_pakaian);
-        
+
         // Calculate total stock from sizes
         $totalStok = 0;
         foreach ($request->stok_ukuran as $ukuran => $stok) {
-            $totalStok += (int)$stok;
+            $totalStok += (int) $stok;
         }
         $pakaian->stok_pakaian = $totalStok; // ✅ Simpan total stok
-        $pakaian->butuh_ukuran = $totalStok > 0 ? true : false; 
+        $pakaian->butuh_ukuran = $totalStok > 0 ? true : false;
 
         $pakaian->save();
 
@@ -81,7 +81,7 @@ class PakaianController extends Controller
             \App\Models\PakaianSize::create([
                 'pakaian_id' => $pakaian->id_pakaian,
                 'ukuran' => $ukuran,
-                'stok' => (int)$stok
+                'stok' => (int) $stok
             ]);
         }
 
@@ -102,7 +102,7 @@ class PakaianController extends Controller
 
             ->where('id_pakaian', $id)
             ->first();
-        $title = 'Detail Data Pakaian';
+        $title = 'Detail Data Produk';
         return view('pakaian.show', compact('title', 'pakaian'));
     }
 
@@ -115,7 +115,7 @@ class PakaianController extends Controller
         $pakaian = Pakaian::find($id);
         $kategori_pakaian = KategoriPakaian::all();
 
-        $title = 'Edit Pakaian';
+        $title = 'Edit Produk';
         return view('pakaian.edit', compact('title', 'kategori_pakaian', 'pakaian'));
     }
 
@@ -128,14 +128,10 @@ class PakaianController extends Controller
 
         $request->validate([
             'kategori_pakaian_id' => 'required',
-            'stok_ukuran' => 'required|array',
-            'nama_pakaian' => 'required',
-            'harga_pakaian' => 'required',
-            'pratinjau_pakaian' => 'required',
-            'harga_pakaian' => 'required',
-            'pratinjau_pakaian' => 'required',
-
-
+            'stok_ukuran'         => 'required|array',
+            'nama_pakaian'        => 'required',
+            'harga_pakaian'       => 'required',
+            'pratinjau_pakaian'   => 'required',
         ]);
 
         // Proses upload gambar
@@ -150,10 +146,10 @@ class PakaianController extends Controller
         // Calculate total stock from sizes
         $totalStok = 0;
         foreach ($request->stok_ukuran as $ukuran => $stok) {
-            $totalStok += (int)$stok;
+            $totalStok += (int) $stok;
         }
 
-        // Update data pakaian
+        // Update data produk
         $pakaian->update([
             'kategori_pakaian_id' => $request->kategori_pakaian_id,
             'nama_pakaian' => $request->nama_pakaian,
@@ -170,12 +166,12 @@ class PakaianController extends Controller
         foreach ($request->stok_ukuran as $ukuran => $stok) {
             \App\Models\PakaianSize::updateOrCreate(
                 ['pakaian_id' => $pakaian->id_pakaian, 'ukuran' => $ukuran],
-                ['stok' => (int)$stok]
+                ['stok' => (int) $stok]
             );
         }
 
 
-        return redirect()->route('pakaian.index')->with('Sukses', 'Berhasil Edit Pakaian');
+        return redirect()->route('pakaian.index')->with('Sukses', 'Berhasil Edit Produk');
     }
 
 
@@ -200,7 +196,7 @@ class PakaianController extends Controller
     {
         $query = $request->input('q');
 
-        $pakaian = \App\Models\Pakaian::where('nama_pakaian', 'like', '%' . $query . '%')->get();
+        $pakaian = Pakaian::where('nama_pakaian', 'like', '%' . $query . '%')->get();
 
         return view('hasil_pencarian', compact('pakaian', 'query'));
     }

@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     public function up()
     {
         // Users
@@ -23,7 +22,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // Kategori Pakaian
+        // Kategori Produk
         Schema::create('kategori_pakaians', function (Blueprint $table) {
             $table->id('id_kategori_pakaian');
             $table->string('nama_kategori_pakaian');
@@ -134,7 +133,7 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
-        
+
         // Failed Jobs
         Schema::create('failed_jobs', function (Blueprint $table) {
             $table->id();
@@ -145,7 +144,7 @@ return new class extends Migration
             $table->longText('exception');
             $table->timestamp('failed_at')->useCurrent();
         });
-        
+
         // Password Resets
         Schema::create('password_resets', function (Blueprint $table) {
             $table->string('email')->index();
