@@ -318,6 +318,11 @@ $konf = DB::table('setting')->first() ?? (object)[
       <div class="form-content">
         <div class="login-form">
           <div class="title">Login</div>
+          @if ($errors->any())
+            <div style="margin-top:10px; padding:10px 14px; background:#fdecea; border-radius:8px; font-size:12.5px; color:#a62117; border-left: 3px solid #e74c3c;">
+              <i class="fas fa-exclamation-circle" style="margin-right:5px;"></i>{{ $errors->first() }}
+            </div>
+          @endif
           <form action="{{ route('login') }}" method="POST">
             {{-- csrf done --}}
             @csrf
@@ -335,7 +340,10 @@ $konf = DB::table('setting')->first() ?? (object)[
                 <div class="g-recaptcha" data-sitekey="6LdxtKIpAAAAABdgQR2Gz1ecWQEKsclXa-7SehrD"></div>
               </div> -->
 
-              <!-- <div class="text"><a href="#">Forgot password?</a></div> -->
+              <div class="text" style="text-align:right; margin-top:8px;">
+                <a href="{{ route('password.request') }}" style="font-size:13px; color:#7d2ae8;">Lupa Password?</a>
+              </div>
+
               <div class="button input-box">
                 <input type="submit" value="Login">
               </div>

@@ -85,6 +85,7 @@ Route::middleware([
 
     Route::post('image-upload', [SettingController::class, 'storeImage'])->name('image.upload');
     Route::resource('setting', SettingController::class);
+    Route::post('setting/change-password', [SettingController::class, 'changePassword'])->name('setting.change-password');
 
     Route::post('/payment/notification', [PaymentController::class, 'notificationHandler'])->name('payment.notification');
 

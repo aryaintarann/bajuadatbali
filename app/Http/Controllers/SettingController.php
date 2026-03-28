@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class SettingController extends Controller
 {
@@ -88,6 +91,42 @@ class SettingController extends Controller
         }
         $setting->update($update);
         return redirect()->back()->with('Sukses', 'Berhasil Edit Konfigurasi Website');
+    }
+
+    /**
+     * Ubah password admin yang sedang login.
+     */
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password'          => ['required'],
+            'new_password'              => ['required', 'confirmed', Password::min(8)],
+            'new_password_confirmation' => ['required'],
+        ], [
+            'current_password.required'          => 'Password saat ini wajib diisi.',
+            'new_password.required'              => 'Password baru wajib diisi.',
+            'new_password.confirmed'             => 'Konfirmasi password tidak cocok.',
+            'new_password.min'                   => 'Password baru minimal 8 karakter.',
+            'new_password_confirmation.required' => 'Konfirmasi password wajib diisi.',
+        ]);
+
+        $user = Auth::user();
+
+        // Verifikasi password lama
+        if (!Hash::check($request->current_password, $user->password)) {
+            return redirect()->back()
+                ->withErrors(['current_password' => 'Password saat ini tidak sesuai.'])
+                ->withInput()
+                ->with('tab', 'password');
+        }
+
+        $user->forceFill([
+            'password' => Hash::make($request->new_password),
+        ])->save();
+
+        return redirect()->route('setting.index')
+            ->with('Sukses', 'Password berhasil diperbarui.')
+            ->with('tab', 'password');
     }
 
     /**

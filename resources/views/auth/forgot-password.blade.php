@@ -1,34 +1,278 @@
-<x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
+<?php
+use Illuminate\Support\Facades\DB;
 
-        <div class="mb-4 text-sm text-gray-600">
-            {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+$konf = DB::table('setting')->first() ?? (object)[
+    'instansi_setting'   => 'Baju Adat Bali',
+    'logo_setting'       => null,
+    'logo_login_setting' => null,
+    'favicon_setting'    => null,
+];
+?>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lupa Password — {{ $konf->instansi_setting }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    @if($konf->favicon_setting)
+    <link rel="icon" href="{{ asset('logo/' . $konf->favicon_setting) }}">
+    @endif
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        :root {
+            --primary: #7d2ae8;
+            --primary-dark: #5b13b9;
+            --primary-light: #a85cf9;
+            --danger: #e74c3c;
+            --success: #2ecc71;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f0f2f5 0%, #e8e0f5 100%);
+            padding: 30px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 48px 40px;
+            box-shadow: 0 20px 60px rgba(125, 42, 232, 0.15);
+            width: 100%;
+            max-width: 460px;
+        }
+
+        .card-logo {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .card-logo img {
+            max-height: 70px;
+            object-fit: contain;
+        }
+
+        .card-logo .brand-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+
+        .card-logo .brand-sub {
+            font-size: 13px;
+            color: #888;
+            margin-top: 2px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            position: relative;
+            padding-bottom: 12px;
+        }
+
+        .card-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 30px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .card-desc {
+            font-size: 13.5px;
+            color: #666;
+            margin-bottom: 28px;
+            line-height: 1.6;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border-left: 4px solid var(--success);
+        }
+
+        .alert-danger {
+            background: #fdecea;
+            color: #a62117;
+            border-left: 4px solid var(--danger);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13.5px;
+            font-weight: 500;
+            color: #444;
+            margin-bottom: 8px;
+        }
+
+        .input-box {
+            display: flex;
+            align-items: center;
+            height: 50px;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+            transition: border-color 0.3s;
+        }
+
+        .input-box:focus-within {
+            border-color: var(--primary);
+        }
+
+        .input-box i {
+            color: var(--primary);
+            font-size: 16px;
+            width: 20px;
+            flex-shrink: 0;
+        }
+
+        .input-box input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 0 12px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #333;
+            background: transparent;
+        }
+
+        .btn-submit {
+            width: 100%;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: 0.3px;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            box-shadow: 0 8px 25px rgba(125, 42, 232, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 13.5px;
+            color: #888;
+            text-decoration: none;
+            margin-top: 24px;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+
+        @media (max-width: 500px) {
+            .card { padding: 36px 24px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        {{-- Logo --}}
+        <div class="card-logo">
+            @if($konf->logo_login_setting)
+                <img src="{{ asset('logo/' . $konf->logo_login_setting) }}" alt="Logo">
+            @elseif($konf->logo_setting)
+                <img src="{{ asset('logo/' . $konf->logo_setting) }}" alt="Logo">
+            @else
+                <div class="brand-name">{{ $konf->instansi_setting }}</div>
+            @endif
+            <div class="brand-sub">Baju Adat Bali</div>
         </div>
 
+        <div class="card-title">Lupa Password?</div>
+        <p class="card-desc">
+            Masukkan email yang terdaftar. Kami akan mengirimkan link reset password ke inbox Anda.
+        </p>
+
+        {{-- Status sukses --}}
         @if (session('status'))
-            <div class="mb-4 font-medium text-sm text-green-600">
-                {{ session('status') }}
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle"></i>
+                <span>{{ session('status') }}</span>
             </div>
         @endif
 
-        <x-validation-errors class="mb-4" />
+        {{-- Validation errors --}}
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>{{ $errors->first() }}</span>
+            </div>
+        @endif
 
         <form method="POST" action="{{ route('password.email') }}">
             @csrf
-
-            <div class="block">
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+            <div class="form-group">
+                <label for="email">Alamat Email</label>
+                <div class="input-box">
+                    <i class="fas fa-envelope"></i>
+                    <input
+                        id="email"
+                        type="email"
+                        name="email"
+                        value="{{ old('email') }}"
+                        placeholder="contoh@email.com"
+                        required
+                        autofocus
+                        autocomplete="email"
+                    >
+                </div>
             </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <x-button>
-                    {{ __('Email Password Reset Link') }}
-                </x-button>
-            </div>
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-paper-plane" style="margin-right:8px;"></i>
+                Kirim Link Reset Password
+            </button>
         </form>
-    </x-authentication-card>
-</x-guest-layout>
+
+        <a href="{{ route('login') }}" class="back-link">
+            <i class="fas fa-arrow-left"></i> Kembali ke halaman login
+        </a>
+    </div>
+</body>
+</html>
