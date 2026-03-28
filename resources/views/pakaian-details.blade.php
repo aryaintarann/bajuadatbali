@@ -54,9 +54,10 @@
                     <!-- Price -->
                     <div class="mb-4" style="background:#fdf8f4; border-radius:12px; padding:16px 20px;">
                         <p style="color:#999; font-size:0.85rem; margin-bottom:4px;">Harga</p>
-                        <h3 style="color:#E8500A; font-weight:700; font-size:1.8rem; margin:0;">
+                        <h3 id="harga-display" style="color:#E8500A; font-weight:700; font-size:1.8rem; margin:0;">
                             Rp {{ number_format($tshirt->harga_pakaian) }}
                         </h3>
+                        <small id="harga-note" class="text-muted" style="display:none;">*Harga sesuai ukuran yang dipilih</small>
                     </div>
 
                     <!-- Stock -->
@@ -94,11 +95,14 @@
                                 @if($availableSizes->count() > 0)
                                     <div class="form-group mb-3">
                                         <label style="font-weight:600; color:#444; font-size:0.9rem;">Pilih Ukuran <span style="color:#E8500A;">*</span></label>
-                                        <select name="ukuran" class="form-control" required
+                                        <select name="ukuran" id="size-select" class="form-control" required
                                             style="border-radius:10px; border:2px solid #eee; height: 50px; padding: 0 16px; font-size:0.9rem;">
                                             <option value="" disabled selected>-- Pilih Ukuran --</option>
                                             @foreach($availableSizes as $size)
-                                                <option value="{{ $size->ukuran }}">{{ $size->ukuran }} (Sisa: {{ $size->stok }})</option>
+                                                <option value="{{ $size->ukuran }}"
+                                                    data-harga="{{ $size->harga > 0 ? $size->harga : $tshirt->harga_pakaian }}">
+                                                    {{ $size->ukuran }} (Sisa: {{ $size->stok }}) &mdash; Rp {{ number_format($size->harga > 0 ? $size->harga : $tshirt->harga_pakaian) }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -136,4 +140,25 @@
         </div>
     </div>
 
+@endsection
+
+@section('script')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const sizeSelect = document.getElementById('size-select');
+        const hargaDisplay = document.getElementById('harga-display');
+        const hargaNote = document.getElementById('harga-note');
+
+        if (sizeSelect) {
+            sizeSelect.addEventListener('change', function () {
+                const selected = this.options[this.selectedIndex];
+                const harga = selected.dataset.harga;
+                if (harga) {
+                    hargaDisplay.textContent = 'Rp ' + parseInt(harga).toLocaleString('id-ID');
+                    hargaNote.style.display = 'inline';
+                }
+            });
+        }
+    });
+</script>
 @endsection

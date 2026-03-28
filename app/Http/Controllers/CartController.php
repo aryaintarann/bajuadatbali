@@ -47,14 +47,26 @@ class CartController extends Controller
         if (isset($cart[$cartKey])) {
             $cart[$cartKey]['quantity']++;
         } else {
+            // Ambil harga sesuai ukuran yang dipilih
+            $harga = $product->harga_pakaian; // default: harga minimum
+            if ($ukuran) {
+                $sizeData = DB::table('pakaian_sizes')
+                    ->where('pakaian_id', $id)
+                    ->where('ukuran', $ukuran)
+                    ->first();
+                if ($sizeData && $sizeData->harga > 0) {
+                    $harga = $sizeData->harga;
+                }
+            }
+
             $cart[$cartKey] = [
-                'id_pakaian' => $product->id_pakaian,
-                'nama'       => $product->nama_pakaian,
-                'harga'      => $product->harga_pakaian,
-                'gambar'     => $product->gambar_pakaian,
+                'id_pakaian'   => $product->id_pakaian,
+                'nama'         => $product->nama_pakaian,
+                'harga'        => $harga,
+                'gambar'       => $product->gambar_pakaian,
                 'butuh_ukuran' => $product->butuh_ukuran,
-                'ukuran'     => $ukuran, // Menyimpan ukuran
-                'quantity'   => 1
+                'ukuran'       => $ukuran,
+                'quantity'     => 1
             ];
         }
 
@@ -159,17 +171,24 @@ class CartController extends Controller
         // Buat key baru
         $newCartKey = $idPakaian . '_' . $newUkuran;
 
+        // Ambil harga ukuran baru
+        $hargaBaru = $ukuranStok->harga > 0
+            ? $ukuranStok->harga
+            : DB::table('pakaian')->where('id_pakaian', $idPakaian)->value('harga_pakaian');
+
         // Jika key baru sudah ada (misal ganti dari S ke M, tapi M sudah ada di cart)
         if (isset($cart[$newCartKey]) && $newCartKey !== $id) {
             if ($ukuranStok->stok < ($cart[$newCartKey]['quantity'] + $quantity)) {
                 return redirect()->back()->with('error', 'Maaf, gabungan stok untuk ukuran ' . $newUkuran . ' tidak mencukupi.');
             }
             $cart[$newCartKey]['quantity'] += $quantity;
+            $cart[$newCartKey]['harga']     = $hargaBaru;
             unset($cart[$id]);
         } else {
-            // Ubah atribut ukuran dan key
-            $cart[$newCartKey] = $cart[$id];
+            // Ubah atribut ukuran, harga, dan key
+            $cart[$newCartKey]          = $cart[$id];
             $cart[$newCartKey]['ukuran'] = $newUkuran;
+            $cart[$newCartKey]['harga']  = $hargaBaru;
             if ($newCartKey !== $id) {
                 unset($cart[$id]);
             }
