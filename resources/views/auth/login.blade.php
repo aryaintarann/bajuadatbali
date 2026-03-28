@@ -2,7 +2,17 @@
 
 use Illuminate\Support\Facades\DB;
 
-$konf = DB::table('setting')->first();
+$konf = DB::table('setting')->first() ?? (object)[
+    'instansi_setting'   => 'Baju Adat Bali',
+    'logo_setting'       => null,
+    'logo_login_setting' => null,
+    'favicon_setting'    => null,
+    'tentang_setting'    => '',
+    'keyword_setting'    => '',
+    'alamat_setting'     => '-',
+    'email_setting'      => '-',
+    'no_hp_setting'      => '-',
+];
 ?>
 
 <!DOCTYPE html>
