@@ -23,7 +23,9 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-// ===== PUBLIC ROUTES =====
+// ===== SIGNUP DISABLED — redirect /register ke /login =====
+Route::get('/register', fn() => redirect()->route('login'))->name('register');
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/kontak', [HomeController::class, 'kontak'])->name('kontak');
 Route::get('/pencarian', [PakaianController::class, 'cari'])->name('pencarian');

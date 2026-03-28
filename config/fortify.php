@@ -132,7 +132,7 @@ return [
     */
 
     'features' => [
-        Features::registration(),
+        // Features::registration(), // Dinonaktifkan — pendaftaran tidak diizinkan
         Features::resetPasswords(),
         // Features::emailVerification(),
         Features::updateProfileInformation(),
