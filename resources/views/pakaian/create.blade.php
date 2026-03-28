@@ -54,31 +54,50 @@
                                 name="harga_pakaian" value="{{ old('harga_pakaian') }}" required>
                         </div>
 
-                        {{-- Hapus Input Stok Global & Ganti dengan Stok Per Ukuran --}}
+                        {{-- Tabel Stok & Harga Per Ukuran --}}
                         <div class="form-group mb-2">
-                            <label>Stok Ukuran S</label>
-                            <input type="number" class="form-control" name="stok_ukuran[S]" min="0" value="0" required>
-                        </div>
-                        <div class="form-group mb-2">
-                            <label>Stok Ukuran M</label>
-                            <input type="number" class="form-control" name="stok_ukuran[M]" min="0" value="0" required>
-                        </div>
-                        <div class="form-group mb-2">
-                            <label>Stok Ukuran L</label>
-                            <input type="number" class="form-control" name="stok_ukuran[L]" min="0" value="0" required>
-                        </div>
-                        <div class="form-group mb-2">
-                            <label>Stok Ukuran XL</label>
-                            <input type="number" class="form-control" name="stok_ukuran[XL]" min="0" value="0" required>
-                        </div>
-                        <div class="form-group mb-2">
-                            <label>Stok Ukuran XXL</label>
-                            <input type="number" class="form-control" name="stok_ukuran[XXL]" min="0" value="0" required>
-                        </div>
-                        <div class="form-group mb-2 text-primary">
-                            <label><strong>Stok All Size (Satu Ukuran / Tidak ada ukuran spesifik)</strong></label>
-                            <input type="number" class="form-control" name="stok_ukuran[All Size]" min="0" value="0"
-                                required>
+                            <label><strong>Stok &amp; Harga Per Ukuran</strong></label>
+                            <small class="text-muted d-block mb-2">
+                                Isi harga per ukuran. Jika harga ukuran dikosongkan (0), akan menggunakan harga dasar.
+                            </small>
+                            <table class="table table-bordered table-sm">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th style="width:20%">Ukuran</th>
+                                        <th style="width:40%">Stok</th>
+                                        <th style="width:40%">Harga (Rp)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach(['S','M','L','XL','XXL','All Size'] as $ukuran)
+                                    <tr>
+                                        <td class="align-middle">
+                                            <strong>{{ $ukuran }}</strong>
+                                            @if($ukuran === 'All Size')
+                                                <br><small class="text-primary">Satu ukuran</small>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <input type="number"
+                                                class="form-control form-control-sm"
+                                                name="stok_ukuran[{{ $ukuran }}]"
+                                                min="0" value="0" required>
+                                        </td>
+                                        <td>
+                                            <div class="input-group input-group-sm">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Rp</span>
+                                                </div>
+                                                <input type="number"
+                                                    class="form-control form-control-sm"
+                                                    name="harga_ukuran[{{ $ukuran }}]"
+                                                    min="0" value="0" placeholder="0 = pakai harga dasar">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
 
 

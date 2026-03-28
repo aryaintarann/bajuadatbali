@@ -12,7 +12,8 @@ class PakaianSize extends Model
     protected $fillable = [
         'pakaian_id',
         'ukuran',
-        'stok'
+        'stok',
+        'harga',
     ];
 
     public function pakaian()

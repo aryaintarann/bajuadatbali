@@ -44,50 +44,50 @@ class PakaianController extends Controller
     {
         $request->validate([
             'kategori_pakaian_id' => 'required',
-            'nama_pakaian' => 'required',
-            'harga_pakaian' => 'required',
-            'stok_ukuran' => 'required|array', // ✅ Validate size array
-            'pratinjau_pakaian' => 'required',
-            'gambar_pakaian' => 'required|image|max:2048',
+            'nama_pakaian'        => 'required',
+            'harga_pakaian'       => 'required|numeric|min:0',
+            'stok_ukuran'         => 'required|array',
+            'harga_ukuran'        => 'required|array',
+            'pratinjau_pakaian'   => 'required',
+            'gambar_pakaian'      => 'required|image|max:2048',
         ]);
 
-
-        $gambar_pakaian = $request->file('gambar_pakaian');
+        $gambar_pakaian  = $request->file('gambar_pakaian');
         $namafilepakaian = 'pakaian' . date('Ymdhis') . '.' . $gambar_pakaian->getClientOriginalExtension();
-        $gambar_pakaian->move(public_path('file/pakaian'), $namafilepakaian); // ✅ gunakan public_path
+        $gambar_pakaian->move(public_path('file/pakaian'), $namafilepakaian);
 
-        $pakaian = new Pakaian();
-        $pakaian->kategori_pakaian_id = $request->kategori_pakaian_id;
-
-        $pakaian->nama_pakaian = $request->nama_pakaian;
-        $pakaian->harga_pakaian = $request->harga_pakaian;
-        $pakaian->pratinjau_pakaian = $request->pratinjau_pakaian;
-
-        $pakaian->gambar_pakaian = $namafilepakaian;
-        $pakaian->slug_pakaian = Str::slug($request->nama_pakaian);
-
-        // Calculate total stock from sizes
+        // Hitung total stok
         $totalStok = 0;
         foreach ($request->stok_ukuran as $ukuran => $stok) {
             $totalStok += (int) $stok;
         }
-        $pakaian->stok_pakaian = $totalStok; // ✅ Simpan total stok
-        $pakaian->butuh_ukuran = $totalStok > 0 ? true : false;
 
+        $hargaDasar = (int) $request->harga_pakaian;
+
+        $pakaian = new Pakaian();
+        $pakaian->kategori_pakaian_id = $request->kategori_pakaian_id;
+        $pakaian->nama_pakaian        = $request->nama_pakaian;
+        $pakaian->harga_pakaian       = $hargaDasar;
+        $pakaian->pratinjau_pakaian   = $request->pratinjau_pakaian;
+        $pakaian->gambar_pakaian      = $namafilepakaian;
+        $pakaian->slug_pakaian        = Str::slug($request->nama_pakaian);
+        $pakaian->stok_pakaian        = $totalStok;
+        $pakaian->butuh_ukuran        = $totalStok > 0;
         $pakaian->save();
 
-        // Save sizes to DB
+        // Simpan stok & harga per ukuran
         foreach ($request->stok_ukuran as $ukuran => $stok) {
+            $harga = (int) ($request->harga_ukuran[$ukuran] ?? 0);
             \App\Models\PakaianSize::create([
                 'pakaian_id' => $pakaian->id_pakaian,
-                'ukuran' => $ukuran,
-                'stok' => (int) $stok
+                'ukuran'     => $ukuran,
+                'stok'       => (int) $stok,
+                'harga'      => $harga > 0 ? $harga : $hargaDasar,
             ]);
         }
 
-        return redirect()->route('pakaian.index')->with('Sukses', 'Berhasil Tambah Pakaian');
+        return redirect()->route('pakaian.index')->with('Sukses', 'Berhasil Tambah Produk');
     }
-
 
 
     /**
@@ -129,47 +129,51 @@ class PakaianController extends Controller
         $request->validate([
             'kategori_pakaian_id' => 'required',
             'stok_ukuran'         => 'required|array',
+            'harga_ukuran'        => 'required|array',
             'nama_pakaian'        => 'required',
-            'harga_pakaian'       => 'required',
+            'harga_pakaian'       => 'required|numeric|min:0',
             'pratinjau_pakaian'   => 'required',
         ]);
 
         // Proses upload gambar
         $namafilepakaian = $pakaian->gambar_pakaian;
         if ($request->hasFile('gambar_pakaian')) {
-            $gambar_pakaian = $request->file('gambar_pakaian');
+            $gambar_pakaian  = $request->file('gambar_pakaian');
             $namafilepakaian = 'pakaian' . date('Ymdhis') . '.' . $gambar_pakaian->getClientOriginalExtension();
             $gambar_pakaian->move(public_path('file/pakaian'), $namafilepakaian);
         }
 
-
-        // Calculate total stock from sizes
+        // Hitung total stok
         $totalStok = 0;
         foreach ($request->stok_ukuran as $ukuran => $stok) {
             $totalStok += (int) $stok;
         }
 
+        $hargaDasar = (int) $request->harga_pakaian;
+
         // Update data produk
         $pakaian->update([
             'kategori_pakaian_id' => $request->kategori_pakaian_id,
-            'nama_pakaian' => $request->nama_pakaian,
-            'harga_pakaian' => $request->harga_pakaian,
-            'stok_pakaian' => $totalStok, // ✅
-            'pratinjau_pakaian' => $request->pratinjau_pakaian,
-
-            'gambar_pakaian' => $namafilepakaian,
-            'slug_pakaian' => Str::slug($request->nama_pakaian),
-            'butuh_ukuran' => $totalStok > 0 ? true : false,
+            'nama_pakaian'        => $request->nama_pakaian,
+            'harga_pakaian'       => $hargaDasar,
+            'stok_pakaian'        => $totalStok,
+            'pratinjau_pakaian'   => $request->pratinjau_pakaian,
+            'gambar_pakaian'      => $namafilepakaian,
+            'slug_pakaian'        => Str::slug($request->nama_pakaian),
+            'butuh_ukuran'        => $totalStok > 0,
         ]);
 
-        // Update or Create sizes in DB
+        // Update stok & harga per ukuran
         foreach ($request->stok_ukuran as $ukuran => $stok) {
+            $harga = (int) ($request->harga_ukuran[$ukuran] ?? 0);
             \App\Models\PakaianSize::updateOrCreate(
                 ['pakaian_id' => $pakaian->id_pakaian, 'ukuran' => $ukuran],
-                ['stok' => (int) $stok]
+                [
+                    'stok'  => (int) $stok,
+                    'harga' => $harga > 0 ? $harga : $hargaDasar,
+                ]
             );
         }
-
 
         return redirect()->route('pakaian.index')->with('Sukses', 'Berhasil Edit Produk');
     }
