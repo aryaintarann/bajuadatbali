@@ -48,12 +48,6 @@
                                 required>{{ old('pratinjau_pakaian') }}</textarea>
                         </div>
 
-                        <div class="form-group mb-2">
-                            <label for=""> Harga Produk <abbr title="" style="color: black">*</abbr></label>
-                            <input type="number" class="form-control" placeholder="Masukkan Harga Produk disini...."
-                                name="harga_pakaian" value="{{ old('harga_pakaian') }}" required>
-                        </div>
-
                         {{-- Tabel Stok & Harga Per Ukuran --}}
                         <div class="form-group mb-2">
                             <label><strong>Stok &amp; Harga Per Ukuran</strong></label>

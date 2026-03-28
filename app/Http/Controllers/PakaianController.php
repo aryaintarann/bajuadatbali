@@ -45,7 +45,6 @@ class PakaianController extends Controller
         $request->validate([
             'kategori_pakaian_id' => 'required',
             'nama_pakaian'        => 'required',
-            'harga_pakaian'       => 'required|numeric|min:0',
             'stok_ukuran'         => 'required|array',
             'harga_ukuran'        => 'required|array',
             'pratinjau_pakaian'   => 'required',
@@ -56,13 +55,17 @@ class PakaianController extends Controller
         $namafilepakaian = 'pakaian' . date('Ymdhis') . '.' . $gambar_pakaian->getClientOriginalExtension();
         $gambar_pakaian->move(public_path('file/pakaian'), $namafilepakaian);
 
-        // Hitung total stok
+        // Hitung total stok & harga minimum dari semua size
         $totalStok = 0;
+        $hargaList = [];
         foreach ($request->stok_ukuran as $ukuran => $stok) {
             $totalStok += (int) $stok;
         }
-
-        $hargaDasar = (int) $request->harga_pakaian;
+        foreach ($request->harga_ukuran as $h) {
+            if ((int) $h > 0) $hargaList[] = (int) $h;
+        }
+        // harga_pakaian = harga minimum dari size (untuk referensi/display & fallback)
+        $hargaDasar = !empty($hargaList) ? min($hargaList) : 0;
 
         $pakaian = new Pakaian();
         $pakaian->kategori_pakaian_id = $request->kategori_pakaian_id;
@@ -131,7 +134,6 @@ class PakaianController extends Controller
             'stok_ukuran'         => 'required|array',
             'harga_ukuran'        => 'required|array',
             'nama_pakaian'        => 'required',
-            'harga_pakaian'       => 'required|numeric|min:0',
             'pratinjau_pakaian'   => 'required',
         ]);
 
@@ -143,13 +145,16 @@ class PakaianController extends Controller
             $gambar_pakaian->move(public_path('file/pakaian'), $namafilepakaian);
         }
 
-        // Hitung total stok
+        // Hitung total stok & harga minimum dari semua size
         $totalStok = 0;
+        $hargaList = [];
         foreach ($request->stok_ukuran as $ukuran => $stok) {
             $totalStok += (int) $stok;
         }
-
-        $hargaDasar = (int) $request->harga_pakaian;
+        foreach ($request->harga_ukuran as $h) {
+            if ((int) $h > 0) $hargaList[] = (int) $h;
+        }
+        $hargaDasar = !empty($hargaList) ? min($hargaList) : ($pakaian->harga_pakaian ?? 0);
 
         // Update data produk
         $pakaian->update([

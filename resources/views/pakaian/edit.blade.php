@@ -47,12 +47,6 @@
                                 class="form-control">{{ $pakaian->pratinjau_pakaian }}</textarea>
                         </div>
 
-                        <div class="form-group mb-2">
-                            <label for="">Harga Produk <abbr title="" style="color: black">*</abbr></label>
-                            <input required type="number" class="form-control" name="harga_pakaian"
-                                value="{{ $pakaian->harga_pakaian }}">
-                        </div>
-
                         {{-- Tabel Stok & Harga Per Ukuran --}}
                         <div class="form-group mb-2">
                             <label><strong>Stok &amp; Harga Per Ukuran</strong></label>
